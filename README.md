@@ -15,19 +15,16 @@ As principais vantagens na utilização do protocolo RADIUS, dentre uma série d
 * **Segurança**: As transferências de informações entre o cliente \(NAS\) e o servidor RADIUS são autenticadas através de um segredo compartilhado \(_shared secret_\). Este segredo é conhecido previamente, tanto pelo NAS quanto pelo servidor RADIUS e garante a autenticidade do usuário em uma determinada requisição.
 * **Compatibilidade**: O servidor RADIUS pode utilizar um banco de dados de usuários de fontes externas para realizar a autenticação dos usuários, como por exemplo, banco de dados _Structured Query Language_ \(SQL\), Kerberos ou LDAP. 
 
+## Instalando o freeRADIUS
 
+Para instalar os servidor RADIUS digite os comandos abaixo:
 
-
-
-{% hint style="info" %}
- Super-powers are granted randomly so please submit an issue if you're not happy with yours.
-{% endhint %}
-
-Once you're strong enough, save the world:
-
+```text
+$ sudo install freeradius freeradius-ldap freeradius-utils
 ```
-// Ain't no code for that yet, sorry
-echo 'You got to trust me on this, I saved the world'
+
+```text
+$ 
 ```
 
 
