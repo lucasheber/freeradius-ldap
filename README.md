@@ -23,11 +23,27 @@ Para instalar os servidor RADIUS digite os comandos abaixo:
 $ sudo install freeradius freeradius-ldap freeradius-utils
 ```
 
-Inicializando o freeRADIUS em modo _debug_:
+Em seguida iremos fazer uma configuração para testarmos se o servidor está funcionando.   
+O servidor `RADIUS` oferece um arquivo de usuários, _plain text,_  por padrão a autenticação dos usuários é feita nele.  Vamos abri-lo:
+
+```text
+$ sudo vim /etc/raddb/users
+```
+
+Em seguida iremos descometar as seguintes linhas:
+
+![Arquivo de configura&#xE7;&#xE3;o de usu&#xE1;rios](.gitbook/assets/root-radius_-15_11_2019-16_43_27.png)
+
+A linha `bob Cleartext-Password := "hello"` representa a criação de um usuário `bob` com a senha em texto puro `hello` .  
+Na linha `Reply-Message := "Hello, %{User-Name}"` indica que quando o usuário for autenticado irá mostrar uma mensagem `Hello` e `%{User-Name}` o nome do usuário.
+
+
+
+Inicializando o `freeRADIUS` em modo _debug_:
 
 ```text
 $ sudo radiusd -X
 ```
 
-{% file src=".gitbook/assets/selecionar-root-radius\_-15\_11\_2019-16\_29\_27.png" caption="Modo Debug" %}
+![Sa&#xED;da do comando, esperando a requisi&#xE7;&#xF5;es](.gitbook/assets/selecionar-root-radius_-15_11_2019-16_29_27.png)
 
