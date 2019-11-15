@@ -50,7 +50,7 @@ Em seguida iremos definir a senha compartilhada para o cliente NAS se comunicar 
 $ sudo vim /etc/raddb/clients.conf
 ```
 
-Iremos editar a variável `secret` dentro do cliente `localhost` na linha secret = testing123 podemos definir qualquer senha por exemplo: `secret = mySecretNAS`
+Iremos editar a variável `secret` dentro do cliente `localhost` na linha `secret = testing123` podemos definir qualquer senha por exemplo: `secret = mySecretNAS`
 
 Para testarmos a autenticação iremos inicializar o `freeRADIUS` em modo _debug_:
 
