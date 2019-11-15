@@ -23,9 +23,11 @@ Para instalar os servidor RADIUS digite os comandos abaixo:
 $ sudo install freeradius freeradius-ldap freeradius-utils
 ```
 
+Inicializando o freeRADIUS em modo _debug_:
+
 ```text
-$ 
+$ sudo radiusd -X
 ```
 
-
+{% file src=".gitbook/assets/selecionar-root-radius\_-15\_11\_2019-16\_29\_27.png" caption="Modo Debug" %}
 
