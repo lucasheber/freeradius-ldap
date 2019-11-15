@@ -30,20 +30,98 @@ O servidor `RADIUS` oferece um arquivo de usuários, _plain text,_  por padrão 
 $ sudo vim /etc/raddb/users
 ```
 
-Em seguida iremos descometar as seguintes linhas:
+Em seguida iremos descomentar as seguintes linhas:
 
-![Arquivo de configura&#xE7;&#xE3;o de usu&#xE1;rios](.gitbook/assets/root-radius_-15_11_2019-16_43_27.png)
+```text
+# The canonical testing user which is in most of the
+# examples.
+#
+bob     Cleartext-Password := "hello"
+        Reply-Message := "Hello, %{User-Name}"
+
+```
 
 A linha `bob Cleartext-Password := "hello"` representa a criação de um usuário `bob` com a senha em texto puro `hello` .  
 Na linha `Reply-Message := "Hello, %{User-Name}"` indica que quando o usuário for autenticado irá mostrar uma mensagem `Hello` e `%{User-Name}` o nome do usuário.
 
+Em seguida iremos definir a senha compartilhada para o cliente NAS se comunicar com o servidor `RADIUS`: 
 
+```text
+$ sudo vim /etc/raddb/clients.conf
+```
 
-Inicializando o `freeRADIUS` em modo _debug_:
+Iremos editar a variável `secret` dentro do cliente `localhost` na linha secret = testing123 podemos definir qualquer senha por exemplo: `secret = mySecretNAS`
+
+Para testarmos a autenticação iremos inicializar o `freeRADIUS` em modo _debug_:
 
 ```text
 $ sudo radiusd -X
 ```
 
-![Sa&#xED;da do comando, esperando a requisi&#xE7;&#xF5;es](.gitbook/assets/selecionar-root-radius_-15_11_2019-16_29_27.png)
+{% hint style="info" %}
+Faça isso em um terminal separado para vermos o resultado quando fizermos a autenticação logo a seguir, se tudo estiver certo irá aparacer uma mensagem no final`Ready to process requests`
+{% endhint %}
+
+```text
+Listening on auth address * port 1812 bound to server default
+Listening on acct address * port 1813 bound to server default
+Listening on auth address :: port 1812 bound to server default
+Listening on acct address :: port 1813 bound to server default
+Listening on auth address 127.0.0.1 port 18120 bound to server inner-tunnel
+Listening on proxy address * port 53202
+Listening on proxy address :: port 47206
+Ready to process requests
+
+```
+
+Para testarmos basta executarmos o seguinte comando:
+
+```text
+$ sudo radtest bob hello 127.0.0.1 0 mySecretNAS
+```
+
+O comando `radtest` funciona basicamente da seguinte maneira:
+
+```text
+radtest <user> <password> <radius-server> <nas-port-number> <secret-shared>
+```
+
+O `user`e `password`definimos no arquivo `/etc/raddb/users`  , o `radius-server` é a nossa própria máquina, o `nas-port-number` seria a porta de autenticação do cliente, em nossa configuração não iremos mexer nela, por padrão colocamos `0`, e a `secret-shared` é a senha compartilhada entre o servidor e o cliente.
+
+A saída do comando será a seguinte:
+
+```text
+[root@radius ~]# radtest bob hello 127.0.0.1 0 mySecretNAS
+Sent Access-Request Id 42 from 0.0.0.0:58587 to 127.0.0.1:1812 length 73
+        User-Name = "bob"
+        User-Password = "hello"
+        NAS-IP-Address = 192.168.0.101
+        NAS-Port = 0
+        Message-Authenticator = 0x00
+        Cleartext-Password = "hello"
+Received Access-Accept Id 42 from 127.0.0.1:1812 to 0.0.0.0:0 length 32
+        Reply-Message = "Hello, bob"
+[root@radius ~]#
+```
+
+No terminal que está rodando o `freeRADIUS` em modo debug podemos ver os logs:
+
+```text
+(0)   Auth-Type PAP {
+(0) pap: Login attempt with password
+(0) pap: Comparing with "known good" Cleartext-Password
+(0) pap: User authenticated successfully
+(0)     [pap] = ok
+(0)   } # Auth-Type PAP = ok
+[....]
+(0)   Reply-Message = "Hello, bob"
+```
+
+{% hint style="danger" %}
+Se por acaso a senha do usuário `bob` estiver incorreta ele iria mostrar a seguinte mensagem entre os logs:
+
+`pap: ERROR: Cleartext password "helllo" does not match "known good" password`
+{% endhint %}
+
+
 
