@@ -2,7 +2,8 @@
 
 ## Introdução
 
-O presente trabalho irá mostrar como a configurar um servidor RADIUS com autenticação em uma base LDAP.
+Este relatório foi feito como trabalho prático da disciplina de **Gerencia e Serviços de Internet** do Curso **Superior de Tecnologia em Sistemas para Internet** .  
+Nele será mostrado como configurar um servidor `RADIUS` com autenticação em uma base `LDAP`.
 
 E para demonstrar o uso faremos o uso de um _hotspot._
 
