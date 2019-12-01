@@ -124,5 +124,7 @@ Se por acaso a senha do usuário `bob` estiver incorreta ele iria mostrar a segu
 `pap: ERROR: Cleartext password "helllo" does not match "known good" password`
 {% endhint %}
 
+## Configurando o modúlo LDAP
+
 
 
