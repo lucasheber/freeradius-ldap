@@ -193,7 +193,7 @@ $ sudo radtest marlon marlon 127.0.0.1 0 mySecretNAS
 
 ```
 
-E o resultado será um A`ccess-Accept`
+E o resultado será um `Access-Accept`
 
 ```text
 Sent Access-Request Id 102 from 0.0.0.0:33244 to 192.168.11.12:1812 length 76
