@@ -75,6 +75,8 @@ Ready to process requests
 
 ```
 
+### Testando o freeRADIUS
+
 Para testarmos basta executarmos o seguinte comando:
 
 ```text
@@ -126,5 +128,81 @@ Se por acaso a senha do usuário `bob` estiver incorreta ele iria mostrar a segu
 
 ## Configurando o modúlo LDAP
 
+Primeiramente vamos adicinonar um link do módulo **LDAP** para o diretório com os módulos carregados pelo `freeRADIUS.`
 
+```text
+$ sudo cd /etc/raddb//mods-enabled/
+$ sudo ln -s ../mods-available/ldap ./
+```
+
+Em seguida iremos iremos configurar o arquivo linkado para comunicar com a base `LDAP`
+
+```text
+$ sudo vim ldap
+```
+
+Iremos fazer as seguintes modificações:
+
+```text
+server = 'ldap://200.131.10.180'
+identity = 'cn=admin,dc=lucas,dc=labredes,dc=info'
+password = <SUA_SENHA>
+base_dn = 'ou=Usuarios,dc=lucas,dc=labredes,dc=info'
+membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
+```
+
+A primeira configurção indica o IP da máquina com a base LDAP.  
+Em seguida passamos as configurações do de autenticação do `admin` e a `senha` de acesso.   
+A linha `base_dn` indica o caminho que contém os usuários.  
+E por último a regra de filtro, para fazer a busca, essa linha basta descomenta-la.
+
+### Habilitando a autenticação LDAP
+
+Com o arquivo [ldap](./#configurando-o-modulo-ldap) configurado, precisamos habilitar essa aunteticação. Iremos modificar os seguites arquivos:
+
+```text
+$ sudo vim /etc/raddb/sites-enabled/default
+```
+
+Dentro da sessão authorize iremos remover o `-` \(traço\) da linha `ldap`
+
+```text
+#
+#  The ldap module reads passwords from the LDAP database.
+ldap
+```
+
+Em seguida, na sessão `authenticate` iremos descomentar as linhas abaixo:
+
+```text
+Auth-Type LDAP {
+     ldap
+}
+```
+
+Faça o mesmo para o arquivo `/etc/raddb/sites-enabled/inner-tunnel` acrescentando a seguinte modificação: Comente a linha dentro da seção `authorize`
+
+```text
+#files
+```
+
+Pronto! Nossos arquivos de autenticação e confgiuração com a base `LDAP` estão configurados! Para testarmos, basta fazer os mesmo teste feito [anteriormente](./#testando-o-freeradius), mas neste caso passando o usuario e senha da base `LDAP`.
+
+```text
+$ sudo radtest marlon marlon 127.0.0.1 0 mySecretNAS
+
+```
+
+E o resultado será um A`ccess-Accept`
+
+```text
+Sent Access-Request Id 102 from 0.0.0.0:33244 to 192.168.11.12:1812 length 76
+        User-Name = "marlon"
+        User-Password = "marlon"
+        NAS-IP-Address = 192.168.11.12
+        NAS-Port = 0
+        Message-Authenticator = 0x00
+        Cleartext-Password = "marlon"
+Received Access-Accept Id 102 from 192.168.11.12:1812 to 0.0.0.0:0 length 20
+```
 
