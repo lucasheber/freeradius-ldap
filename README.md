@@ -190,7 +190,6 @@ Pronto! Nossos arquivos de autenticação e confgiuração com a base `LDAP` est
 
 ```text
 $ sudo radtest marlon marlon 127.0.0.1 0 mySecretNAS
-
 ```
 
 E o resultado será um `Access-Accept`
@@ -205,4 +204,22 @@ Sent Access-Request Id 102 from 0.0.0.0:33244 to 192.168.11.12:1812 length 76
         Cleartext-Password = "marlon"
 Received Access-Accept Id 102 from 192.168.11.12:1812 to 0.0.0.0:0 length 20
 ```
+
+## Configuração para Hotspot
+
+No roteador wifi, a aunteticação é feita via EAP-PEAP, para que o freeRADIUS consiga identificar a senha é preciso fazer uma configurção a mais. Abra o arquivo `/etc/raddb/mods-enabled/eap`, e na sessão `peap`altere a seguinte linha:
+
+De: 
+
+```text
+default_eap_type = mschapv2
+```
+
+Para:
+
+```text
+default_eap_type = gtc
+```
+
+Feito isso basta testar a autenticação em dispositivo com `wifi.`
 
