@@ -144,14 +144,14 @@ $ sudo vim ldap
 Iremos fazer as seguintes modificações:
 
 ```text
-server = 'ldap://200.131.10.180'
+server = 'ldap://ldap1.labredes.info'
 identity = 'cn=admin,dc=lucas,dc=labredes,dc=info'
 password = <SUA_SENHA>
 base_dn = 'ou=Usuarios,dc=lucas,dc=labredes,dc=info'
 membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
 ```
 
-A primeira configurção indica o IP da máquina com a base LDAP.  
+A primeira configurção indica o IP ou DNS da máquina com a base LDAP.  
 Em seguida passamos as configurações do de autenticação do `admin` e a `senha` de acesso.   
 A linha `base_dn` indica o caminho que contém os usuários.  
 E por último a regra de filtro, para fazer a busca, essa linha basta descomenta-la.
