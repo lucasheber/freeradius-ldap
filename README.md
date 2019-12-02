@@ -1,3 +1,7 @@
+---
+description: Configurando uma rede wifi WPA2-Empresarial com autenticação na base openldap.
+---
+
 # Servidor freeRADIUS com autenticação LDAP
 
 ## Introdução
@@ -16,6 +20,14 @@ As principais vantagens na utilização do protocolo RADIUS, dentre uma série d
 * **Segurança**: As transferências de informações entre o cliente \(NAS\) e o servidor RADIUS são autenticadas através de um segredo compartilhado \(_shared secret_\). Este segredo é conhecido previamente, tanto pelo NAS quanto pelo servidor RADIUS e garante a autenticidade do usuário em uma determinada requisição.
 * **Compatibilidade**: O servidor RADIUS pode utilizar um banco de dados de usuários de fontes externas para realizar a autenticação dos usuários, como por exemplo, banco de dados _Structured Query Language_ \(SQL\), Kerberos ou LDAP. 
 
+## Pré requisitos
+
+{% hint style="warning" %}
+As configurações feitas abaixo, assume que nenhum firewall esteja impedindo os servições executados.
+{% endhint %}
+
+
+
 ## Instalando o freeRADIUS
 
 Para instalar os servidor RADIUS digite os comandos abaixo:
@@ -23,6 +35,12 @@ Para instalar os servidor RADIUS digite os comandos abaixo:
 ```text
 $ sudo install freeradius freeradius-ldap freeradius-utils
 ```
+
+{% hint style="info" %}
+Caso não encontre os pacotes acima, instale o seguinte pacote:
+
+`$ sudo yum install epel-release`
+{% endhint %}
 
 Em seguida iremos fazer uma configuração para testarmos se o servidor está funcionando.   
 O servidor `RADIUS` oferece um arquivo de usuários, _plain text,_  por padrão a autenticação dos usuários é feita nele.  Vamos abri-lo:
@@ -61,6 +79,8 @@ $ sudo radiusd -X
 
 {% hint style="info" %}
 Faça isso em um terminal separado para vermos o resultado quando fizermos a autenticação logo a seguir, se tudo estiver certo irá aparacer uma mensagem no final`Ready to process requests`
+
+Para parar a execução aperte `Ctrl+C`
 {% endhint %}
 
 ```text
@@ -107,7 +127,7 @@ Received Access-Accept Id 42 from 127.0.0.1:1812 to 0.0.0.0:0 length 32
 [root@radius ~]#
 ```
 
-No terminal que está rodando o `freeRADIUS` em modo debug podemos ver os logs:
+No terminal que está rodando o `freeRADIUS` em modo _debug_ podemos ver os logs:
 
 ```text
 (0)   Auth-Type PAP {
@@ -186,7 +206,7 @@ Faça o mesmo para o arquivo `/etc/raddb/sites-enabled/inner-tunnel` acrescentan
 #files
 ```
 
-Pronto! Nossos arquivos de autenticação e confgiuração com a base `LDAP` estão configurados! Para testarmos, basta fazer os mesmo teste feito [anteriormente](./#testando-o-freeradius), mas neste caso passando o usuario e senha da base `LDAP`.
+Pronto! Nossos arquivos de autenticação e configuração com a base `LDAP` estão configurados! Para testarmos, basta fazer os mesmo teste feito [anteriormente](./#testando-o-freeradius), mas neste caso passando o usuário e senha da base `LDAP`.
 
 ```text
 $ sudo radtest marlon marlon 127.0.0.1 0 mySecretNAS
@@ -207,7 +227,7 @@ Received Access-Accept Id 102 from 192.168.11.12:1812 to 0.0.0.0:0 length 20
 
 ## Configuração para Hotspot
 
-No roteador wifi, a aunteticação é feita via EAP-PEAP, para que o freeRADIUS consiga identificar a senha é preciso fazer uma configurção a mais. Abra o arquivo `/etc/raddb/mods-enabled/eap`, e na sessão `peap`altere a seguinte linha:
+No roteador wifi, a autenticação é feita via EAP-PEAP, para que o freeRADIUS consiga identificar a senha é preciso fazer uma configuração a mais. Abra o arquivo `/etc/raddb/mods-enabled/eap`, e na sessão `peap`altere a seguinte linha:
 
 De: 
 
@@ -221,13 +241,20 @@ Para:
 default_eap_type = gtc
 ```
 
-Feito isso basta testar a autenticação em dispositivo com `wifi.`
+Feito isso, ative o `radius` para executar normalmente.
+
+```text
+$ sudo systemctl start radiusd
+$ sudo systemclt enable radiusd
+```
 
 ## Configurando um roteador
 
 Na imagem abaixo foi feito a configuração de um roteador TP-Link. TL-WR840N.
 
-![](.gitbook/assets/tl-wr840n-google-chrome-02_12_2019-17_13_19.png)
+No campo Servidor Radius coloque o IP da máquina com o serviço `radius` executando.
 
+![Configura&#xE7;&#xE3;o do roteador](.gitbook/assets/tl-wr840n-google-chrome-02_12_2019-17_13_19.png)
 
+Feito isso basta testar a autenticação em dispositivo com `wifi.`
 
