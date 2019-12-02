@@ -223,3 +223,11 @@ default_eap_type = gtc
 
 Feito isso basta testar a autenticação em dispositivo com `wifi.`
 
+## Configurando um roteador
+
+Na imagem abaixo foi feito a configuração de um roteador TP-Link. TL-WR840N.
+
+![](.gitbook/assets/tl-wr840n-google-chrome-02_12_2019-17_13_19.png)
+
+
+
