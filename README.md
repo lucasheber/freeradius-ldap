@@ -9,7 +9,7 @@ description: 'Autor: Lucas Heber <lucas.heber07@gmail.com>'
 Este relatório foi feito como trabalho prático da disciplina de **Gerencia e Serviços de Internet** do Curso **Superior de Tecnologia em Sistemas para Internet**  campus **Barbacena**.  
 Nele será mostrado como configurar um servidor `RADIUS` com autenticação em uma base `LDAP`.
 
-E para demonstrar o uso faremos o uso de um _hotspot._
+E para demonstrar o uso faremos o acesso de uma conexão _hotspot._
 
 ### Protocolo RADIUS
 
@@ -23,7 +23,7 @@ As principais vantagens na utilização do protocolo RADIUS, dentre uma série d
 ## Pré requisitos
 
 {% hint style="warning" %}
-As configurações feitas abaixo, assume que nenhum firewall esteja impedindo os servições executados. 
+As configurações feitas abaixo, assume que nenhum firewall esteja impedindo os serviços executados. 
 {% endhint %}
 
 ## Arquitetura da rede
@@ -82,7 +82,7 @@ $ sudo radiusd -X
 ```
 
 {% hint style="info" %}
-Faça isso em um terminal separado para vermos o resultado quando fizermos a autenticação logo a seguir, se tudo estiver certo irá aparacer uma mensagem no final`Ready to process requests`
+Faça isso em um terminal separado para vermos o resultado quando fizermos a autenticação logo a seguir, se tudo estiver certo irá aparecer uma mensagem no final`Ready to process requests`
 
 Para parar a execução aperte `Ctrl+C`
 {% endhint %}
@@ -150,9 +150,9 @@ Se por acaso a senha do usuário `bob` estiver incorreta ele iria mostrar a segu
 `pap: ERROR: Cleartext password "helllo" does not match "known good" password`
 {% endhint %}
 
-## Configurando o modúlo LDAP
+## Configurando o módulo LDAP
 
-Primeiramente vamos adicinonar um link do módulo **LDAP** para o diretório com os módulos carregados pelo `freeRADIUS.`
+Primeiramente vamos adicionar um link do módulo **LDAP** para o diretório com os módulos carregados pelo `freeRADIUS.`
 
 ```text
 $ sudo cd /etc/raddb//mods-enabled/
@@ -175,20 +175,20 @@ base_dn = 'ou=Usuarios,dc=lucas,dc=labredes,dc=info'
 membership_filter = "(|(member=%{control:Ldap-UserDn})(memberUid=%{%{Stripped-User-Name}:-%{User-Name}}))"
 ```
 
-A primeira configurção indica o IP ou DNS da máquina com a base LDAP.  
+A primeira configuração indica o IP ou DNS da máquina com a base LDAP.  
 Em seguida passamos as configurações do de autenticação do `admin` e a `senha` de acesso.   
 A linha `base_dn` indica o caminho que contém os usuários.  
-E por último a regra de filtro, para fazer a busca, essa linha basta descomenta-la.
+E por último a regra de filtro, para fazer a busca, essa linha basta descomentar.
 
 ### Habilitando a autenticação LDAP
 
-Com o arquivo [ldap](./#configurando-o-modulo-ldap) configurado, precisamos habilitar essa aunteticação. Iremos modificar os seguites arquivos:
+Com o arquivo [ldap](./#configurando-o-modulo-ldap) configurado, precisamos habilitar essa autenticação. Iremos modificar os seguites arquivos:
 
 ```text
 $ sudo vim /etc/raddb/sites-enabled/default
 ```
 
-Dentro da sessão authorize iremos remover o `-` \(traço\) da linha `ldap`
+Dentro da sessão `authorize` iremos remover o `-` \(traço\) da linha `ldap`
 
 ```text
 #
