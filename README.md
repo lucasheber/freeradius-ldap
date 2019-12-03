@@ -23,7 +23,7 @@ As principais vantagens na utilização do protocolo RADIUS, dentre uma série d
 ## Pré requisitos
 
 {% hint style="warning" %}
-As configurações feitas abaixo, assume que nenhum firewall esteja impedindo os servições executados.
+As configurações feitas abaixo, assume que nenhum firewall esteja impedindo os servições executados. 
 {% endhint %}
 
 ## Arquitetura da rede
