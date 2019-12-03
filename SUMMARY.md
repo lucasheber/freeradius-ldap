@@ -1,4 +1,4 @@
 # Table of contents
 
-* [Servidor freeRADIUS com autenticação LDAP](README.md)
+* [Servidor freeRADIUS com autenticação via LDAP](README.md)
 

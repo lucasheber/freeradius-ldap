@@ -1,8 +1,8 @@
 ---
-description: Configurando uma rede wifi WPA2-Empresarial com autenticação na base openldap.
+description: 'Autor: Lucas Heber <lucas.heber07@gmail.com>'
 ---
 
-# Servidor freeRADIUS com autenticação LDAP
+# Servidor freeRADIUS com autenticação via LDAP
 
 ## Introdução
 
