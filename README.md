@@ -6,7 +6,7 @@ description: Configurando uma rede wifi WPA2-Empresarial com autenticação na b
 
 ## Introdução
 
-Este relatório foi feito como trabalho prático da disciplina de **Gerencia e Serviços de Internet** do Curso **Superior de Tecnologia em Sistemas para Internet** .  
+Este relatório foi feito como trabalho prático da disciplina de **Gerencia e Serviços de Internet** do Curso **Superior de Tecnologia em Sistemas para Internet**  campus **Barbacena**.  
 Nele será mostrado como configurar um servidor `RADIUS` com autenticação em uma base `LDAP`.
 
 E para demonstrar o uso faremos o uso de um _hotspot._
@@ -26,7 +26,11 @@ As principais vantagens na utilização do protocolo RADIUS, dentre uma série d
 As configurações feitas abaixo, assume que nenhum firewall esteja impedindo os servições executados.
 {% endhint %}
 
+## Arquitetura da rede
 
+A seguinte arquitetura foi utilizada para fazer o trabalho, lembrando que somente o servidor LDAP estava em uma outra rede.
+
+![Diagrama de rede ](.gitbook/assets/diagrama-de-rede-generico.png)
 
 ## Instalando o freeRADIUS
 
@@ -257,4 +261,11 @@ No campo Servidor Radius coloque o IP da máquina com o serviço `radius` execut
 ![Configura&#xE7;&#xE3;o do roteador](.gitbook/assets/tl-wr840n-google-chrome-02_12_2019-17_13_19.png)
 
 Feito isso basta testar a autenticação em dispositivo com `wifi.`
+
+## Referências
+
+* [https://stackoverflow.com/questions/48644059/freeradius-eap-peap-with-ldap](https://stackoverflow.com/questions/48644059/freeradius-eap-peap-with-ldap)
+* [https://freeradius.org/documentation/](https://freeradius.org/documentation/)
+* [https://github.com/RafaelFazzolino/ServicoRadiusLdap/wiki/Instala%C3%A7%C3%A3o-e-configura%C3%A7%C3%A3o-do-FreeRadius](https://github.com/RafaelFazzolino/ServicoRadiusLdap/wiki/Instala%C3%A7%C3%A3o-e-configura%C3%A7%C3%A3o-do-FreeRadius)
+* [https://pt.wikipedia.org/wiki/FreeRADIUS](https://pt.wikipedia.org/wiki/FreeRADIUS)
 
